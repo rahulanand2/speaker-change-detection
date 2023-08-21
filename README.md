@@ -1,0 +1,1 @@
+# speaker_change_detection_msc_project
