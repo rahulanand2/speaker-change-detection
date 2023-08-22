@@ -49,3 +49,8 @@ Invoke the unsupervised method for speaker change detection with MFCC, BIC, Kmea
 Utilize the `scd_pretrained.ipynb` notebook on Google Colab for a pre-trained model. Access test files and save results to Google Drive by integrating the Google Colab session.
 
 Test files have been accessed and results saved on google drive via mounting on the google colab session.
+
+## Addition Files
+Logic and code used for making the test_data_trimmed from original files is in Notebook Trim files.ipynb
+
+Code used to merge the results and calculate mean and standard deviation of each model in one file os present in Notebook merge_results.ipynb
