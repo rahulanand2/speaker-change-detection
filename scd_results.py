@@ -90,58 +90,6 @@ def change_points_to_segments(turns_or_change_points, is_ground_truth=False, thr
 
     return segments
 
-# def change_points_to_segments(turns_or_change_points, is_ground_truth=False, threshold=0.2):
-#     """
-#     Convert turns or change points into segments.
-#     """
-#     segments = []
-#
-#     # If handling ground truth with speaker information
-#     if is_ground_truth:
-#         active_speakers = set()
-#         i = 0
-#         while i < len(turns_or_change_points) - 1:
-#             prev_start, prev_end, prev_speaker = turns_or_change_points[i]
-#             curr_start, curr_end, curr_speaker = turns_or_change_points[i + 1]
-#
-#             if prev_end > curr_start and prev_speaker != curr_speaker:
-#                 close_change_points = [prev_end, curr_start]
-#                 while curr_start - prev_end <= threshold and i + 2 < len(turns_or_change_points):
-#                     i += 1
-#                     prev_end = curr_end
-#                     curr_start, curr_end, curr_speaker = turns_or_change_points[i + 1]
-#                     close_change_points.append(curr_start)
-#                 avg_change_point = sum(close_change_points) / len(close_change_points)
-#                 segments.append((prev_start, avg_change_point, prev_speaker))
-#                 active_speakers.add(prev_speaker)
-#                 active_speakers.add(curr_speaker)
-#             elif prev_end <= curr_start:
-#                 active_speakers.discard(prev_speaker)
-#                 if curr_speaker not in active_speakers:
-#                     segments.append((prev_start, curr_start, prev_speaker))
-#                 active_speakers.add(curr_speaker)
-#             i += 1
-#
-#     # If handling predictions without speaker information
-#     else:
-#         prev_start = turns_or_change_points[0]
-#         i = 1
-#         while i < len(turns_or_change_points):
-#             start = turns_or_change_points[i]
-#             close_change_points = [prev_start, start]
-#             while start - prev_start <= threshold and i + 1 < len(turns_or_change_points):
-#                 i += 1
-#                 prev_start = start
-#                 start = turns_or_change_points[i]
-#                 close_change_points.append(start)
-#             avg_change_point = sum(close_change_points) / len(close_change_points)
-#             segments.append((prev_start, avg_change_point, "speaker"))
-#             prev_start = avg_change_point
-#             i += 1
-#
-#     return segments
-
-
 def read_rttm(rttm_file_path):
     """
     Read an RTTM file and return the speaker change points.
@@ -323,23 +271,6 @@ def plot_prediction_points(rttm_file_path, change_points_predictions, t , y):
     plt.show()
     return ground_truth, turns
 
-
-# def plot_segments(ref_segments, hyp_segments, t , y):
-#     plt.plot(t, y, color='grey', linewidth=0.5, label="Waveform")
-#
-#     prev_speaker = ref_segments[0][0]
-#     for segment in ref_segments[1:]:
-#         label, start, end = segment
-#         if label != prev_speaker:
-#             plt.axvline(x=start, color='g', linestyle='--', ymin=0.25, ymax=0.75, label="Speaker Change") # Change point in green
-#         prev_speaker = label
-#
-#     plt.xlabel('Time')
-#     plt.ylabel('Value') # You can customize the ylabel to your specific context
-#     plt.title('Speaker Change Detection')
-#     plt.legend(loc='upper right')
-#     plt.savefig('Outputs/rt2323232ffgfg.png')
-#     plt.show()
 
 def plot_segments(ref_segments, hyp_segments, t, y, rttm_file_path, threshold=0.5):
     fig, ax = plt.subplots(figsize=(20, 10))

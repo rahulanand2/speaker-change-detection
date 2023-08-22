@@ -36,20 +36,6 @@ def get_file_pairs(dir_path):
 
     return file_pairs
 
-# def read_rttm(rttm_file_path):
-#     turns = []
-#     with open(rttm_file_path, 'r') as file:
-#         for line in file:
-#             parts = line.split()
-#             start_time = float(parts[3])
-#             duration = float(parts[4])
-#             end_time = start_time + duration
-#             speaker_id = parts[7]
-#             turns.append((start_time, end_time, speaker_id))
-#     turns.sort()
-#     speaker_change_points = [turns[i - 1][1] for i in range(1, len(turns)) if turns[i - 1][1] != turns[i][0]]
-#     return speaker_change_points
-
 def read_rttm(rttm_file_path):
     """
     Read an RTTM file and return the speaker change points.
@@ -96,10 +82,6 @@ def read_rttm(rttm_file_path):
 
     return speaker_change_points, turns
 
-# def change_points_to_segments(change_points):
-#     change_points.sort()
-#     segments = [("speaker", change_points[i], change_points[i + 1]) for i in range(len(change_points) - 1)]
-#     return segments
 
 def change_points_to_segments(turns_or_change_points, is_ground_truth=False, threshold=0.2):
     """
@@ -225,19 +207,9 @@ def calulate_accuracy_metrics(change_points_predictions, ground_truth, time_valu
         for label, start, end in hyp
         if all(isinstance(value, (int, float)) or value.replace('.', '', 1).isdigit() for value in [start, end])
     ]
-    # hyp = list(set(hyp))
-    # Calculate DER using simpleder
+
     der = simpleder.DER(ref, hyp)
 
-    # # Create binary labels for ground truth
-    # binary_labels = np.zeros_like(time_values)
-    # for i in range(len(ground_truth) - 1):
-    #     start_time = ground_truth[i]
-    #     end_time = ground_truth[i + 1]
-    #     binary_labels[(time_values >= start_time) & (time_values < end_time)] = 1
-
-    # Create binary predictions
-    # binary_predictions = (data_values > threshold).astype(int)
     tolerance_window = 0.5  # You can set this to a value that suits your task
     ref_changes = [segment[1] for segment in ref]
     hyp_changes = [segment[2] for segment in hyp]
